@@ -1,1 +1,1 @@
-# Getting_and_Cleaning_Data_Course_Project
+# Getting_and_Cleaning_Data_Course_ProjectThis is an assignment of the Course Getting and Cleaning Data.  The purpose is to make a Clean and understandable  dataset of the smart phone records of human activities.The dataset is processed by run_analysis.R script, and the detailed variable names are in the  codebook.
