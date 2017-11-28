@@ -1,5 +1,3 @@
-setwd("~/GitHub/Getting_and_Cleaning_Data_Course_Project")
-
 #Merges the training and the test sets
 test <- read.table("./UCI HAR Dataset/test/X_test.txt")
 train <- read.table("./UCI HAR Dataset/train/X_train.txt")
@@ -19,7 +17,7 @@ rm(atest,atrain)
 #Extracts only the measurements on the mean and standard deviation
 #for each measurement
 feature <- read.table("./UCI HAR Dataset/features.txt")
-fid <- sort(c(grep("mean",feature$V2),grep("std",feature$V2)))
+fid <- sort(c(grep("mean\\(\\)",feature$V2),grep("std\\(\\)",feature$V2)))
 fname <- as.character(feature$V2[fid])
 fname <- gsub("-","_",fname)
 fname <- gsub("\\(\\)","",fname)
@@ -39,11 +37,6 @@ all_data <- cbind(subject,activity,record)
 
 #Appropriately labels the data set with descriptive variable names
 colnames(all_data) <- c("Subject","Activity",fname)
-
-#store new dataset in file
-write.table(all_data,file="all_data.txt",row.names = FALSE)
-
-
 
 #Creat dataset by variable subject and activity
 a <- all_data
@@ -74,5 +67,3 @@ mean_data <- mean_data[order(mean_data$Subject),]
 
 #write this dataset into file
 write.table(mean_data,file="mean_data.txt",row.names = FALSE)
-
-write.table(colnames(mean_data),file="variable_name.txt", quote=F, col.names=F)
