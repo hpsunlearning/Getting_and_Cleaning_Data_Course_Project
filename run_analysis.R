@@ -40,11 +40,16 @@ all_data <- cbind(subject,activity,record)
 #Appropriately labels the data set with descriptive variable names
 colnames(all_data) <- c("Subject","Activity",fname)
 
-#Creat dataset by variable subject
-library(dplyr)
+#store new dataset in file
+write.table(all_data,file="all_data.txt",row.names = FALSE)
+
+
+
+#Creat dataset by variable subject and activity
 a <- all_data
-a$sub_act <- paste(a$Subject,"_",a$Activity)
-a <- a[c(82,3:81)]
+a$sub_act <- paste(a$Subject,"@",a$Activity)
+a <- a[,c(ncol(a),1:ncol(a)-1)]
+a <- subset(a,select = - c(Subject,Activity))
 a_sub <- split(a,a$sub_act)
 
 mean_data <- matrix(ncol = ncol(a)-1, nrow = length(a_sub))
@@ -57,10 +62,17 @@ mean_data <- cbind(names(a_sub),mean_data)
 colnames(mean_data) <- colnames(a)
 mean_data$sub_act <- as.character(mean_data$sub_act)
 
+mean_data$Subject <- gsub("@.*",'',mean_data$sub_act)
+mean_data$Activity <- gsub(".*@ ",'',mean_data$sub_act)
 
+mean_data <- mean_data[,c(ncol(mean_data)-1,ncol(mean_data),1:ncol(mean_data))]
+mean_data <- mean_data[,-c(ncol(mean_data)-1,ncol(mean_data))]
+mean_data <- subset(mean_data,select=-sub_act)
 
+mean_data$Subject <- as.numeric(mean_data$Subject)
+mean_data <- mean_data[order(mean_data$Subject),]
 
+#write this dataset into file
+write.table(mean_data,file="mean_data.txt",row.names = FALSE)
 
-
-
-
+write.table(colnames(mean_data),file="variable_name.txt", quote=F, col.names=F)
